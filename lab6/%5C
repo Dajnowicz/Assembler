@@ -1,0 +1,66 @@
+ntel_syntax noprefix
+.global main
+.text
+ 
+main:
+        mov eax, [esp+8]
+        mov eax, [eax+4]
+ 
+        push eax
+        call atoi
+        add esp,4
+ 
+        push eax
+        mov ebx, 0
+ 
+        call fib
+        add esp,4
+ 
+        mov eax, ebx
+        push eax
+        mov edx, offset messg
+        push edx
+        call printf
+        add esp,8
+ 
+        xor ebx, ebx
+        ret
+ 
+fib:
+        cmp eax, 1
+        jg skok
+       
+        cmp eax ,1
+        je skok1
+       
+        mov ebx, 0
+        mov ecx, 0
+        inc eax
+        ret
+ 
+skok:
+        dec eax
+        push eax
+        call fib
+        add esp, 4
+        mov ebx, ecx
+        add ebx, edx
+        mov edx, ecx
+        mov ecx, ebx
+        inc eax
+        ret
+skok1:
+        dec eax
+        push eax
+        call fib
+        add esp, 4
+        mov ebx, 1
+        mov edx, 0      ;#edx - f(n-2)
+        mov ecx, ebx    ;#ecx - f(n-1)
+       
+        inc eax
+        ret
+ 
+.data
+        messg: .asciz "Wynik=%i\n"
+        n: .int 10
